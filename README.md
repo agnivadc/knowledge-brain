@@ -25,6 +25,8 @@ brain list --limit 5                             # most-recent nodes
 Run `brain-mcp` (stdio). Set `BRAIN_DB_PATH` env var to point at your DB.
 The server exposes two tools: `brain_write` and `brain_query`.
 
+To wire it into Claude Code or Claude Desktop, see `docs/mcp-setup.md`.
+
 ## Status
 
 This is the MVP. See `CLAUDE.md` for what's intentionally out of scope.
