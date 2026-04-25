@@ -148,3 +148,64 @@ class TestWriteAndQuery:
         store.write_node(node)
         items, _ = store.query()
         assert items[0] == node
+
+
+class TestAllNodes:
+    def test_returns_empty_list_for_empty_db(self, store: Store):
+        assert store.all_nodes() == []
+
+    def test_returns_all_nodes_sorted_by_id(self, store: Store):
+        # Use deterministic IDs to make the sort assertion concrete
+        nodes = [
+            KnowledgeNode(id="kn-c", content="c", tags=["t"]),
+            KnowledgeNode(id="kn-a", content="a", tags=["t"]),
+            KnowledgeNode(id="kn-b", content="b", tags=["t"]),
+        ]
+        for n in nodes:
+            store.write_node(n)
+        result = store.all_nodes()
+        assert [n.id for n in result] == ["kn-a", "kn-b", "kn-c"]
+
+
+class TestMergeNode:
+    def test_merge_inserts_when_id_is_new(self, store: Store):
+        node = _node("hello", ["t"])
+        result = store.merge_node(node)
+        assert result == "inserted"
+        assert store.all_nodes() == [node]
+
+    def test_merge_skips_when_id_exists_without_force(self, store: Store):
+        node = _node("hello", ["t"])
+        store.write_node(node)
+        # Try merging a different content under the same id — should be a no-op
+        same_id_diff_content = KnowledgeNode(
+            id=node.id,
+            content="different content",
+            tags=["other"],
+            created_at=node.created_at,
+        )
+        result = store.merge_node(same_id_diff_content)
+        assert result == "skipped"
+        # Stored node is unchanged
+        assert store.all_nodes()[0].content == "hello"
+
+    def test_merge_replaces_when_force_and_id_exists(self, store: Store):
+        node = _node("hello", ["t"])
+        store.write_node(node)
+        replacement = KnowledgeNode(
+            id=node.id,
+            content="replacement content",
+            tags=["new-tag"],
+            created_at=node.created_at,
+        )
+        result = store.merge_node(replacement, force=True)
+        assert result == "replaced"
+        stored = store.all_nodes()[0]
+        assert stored.content == "replacement content"
+        assert stored.tags == ["new-tag"]
+
+    def test_merge_preserves_existing_when_force_false_on_new_id(self, store: Store):
+        # force=True on a new id should still just insert, not raise
+        new_node = _node("new", ["t"])
+        result = store.merge_node(new_node, force=True)
+        assert result == "inserted"

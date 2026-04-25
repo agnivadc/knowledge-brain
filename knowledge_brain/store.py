@@ -74,6 +74,47 @@ class Store:
                 ),
             )
 
+    def merge_node(self, node: KnowledgeNode, *, force: bool = False) -> str:
+        """Insert a node, skipping (or replacing if force) on ID conflict.
+
+        Returns one of: "inserted", "skipped", "replaced".
+        """
+        params = (
+            node.id,
+            node.content,
+            json.dumps(node.tags),
+            node.source_type,
+            node.source_ref,
+            node.created_at,
+            node.confidence,
+        )
+        with self._connect() as conn:
+            existing = conn.execute(
+                "SELECT 1 FROM knowledge_nodes WHERE id = ?", (node.id,)
+            ).fetchone()
+            if existing is None:
+                conn.execute(
+                    f"INSERT INTO knowledge_nodes ({_COLS}) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    params,
+                )
+                return "inserted"
+            if force:
+                conn.execute(
+                    f"INSERT OR REPLACE INTO knowledge_nodes ({_COLS}) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    params,
+                )
+                return "replaced"
+            return "skipped"
+
+    def all_nodes(self) -> list[KnowledgeNode]:
+        """Return all nodes sorted by id (stable for diff-friendly export)."""
+        with self._connect() as conn:
+            rows = conn.execute(
+                f"SELECT {_COLS} FROM knowledge_nodes ORDER BY id"
+            ).fetchall()
+        return [_row_to_node(r) for r in rows]
+
     def query(
         self,
         query_text: str | None = None,

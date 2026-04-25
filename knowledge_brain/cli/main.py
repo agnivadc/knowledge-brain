@@ -4,6 +4,8 @@ import argparse
 import sys
 
 from ..models import InputValidationError
+from . import export as export_cmd
+from . import import_jsonl as import_cmd
 from . import init as init_cmd
 from . import list as list_cmd
 from . import query as query_cmd
@@ -18,7 +20,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to SQLite DB (default: data_store/knowledge.db)",
     )
     sub = p.add_subparsers(dest="cmd", required=True)
-    for mod in (init_cmd, write_cmd, query_cmd, list_cmd):
+    for mod in (init_cmd, write_cmd, query_cmd, list_cmd, export_cmd, import_cmd):
         mod.register(sub)
     return p
 
