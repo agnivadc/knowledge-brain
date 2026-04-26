@@ -86,6 +86,16 @@ class TestWrite:
         assert rc == 1
         assert "exceeds max_input_tokens" in err
 
+    def test_write_to_uninitialized_db_exits_2(self, tmp_path: Path, capsys):
+        db = tmp_path / "noinit.db"
+        # No init - table doesn't exist; triggers sqlite3.OperationalError
+        rc, _, err = _run(
+            ["--db-path", str(db), "write", "hello", "--tags", "t"],
+            capsys,
+        )
+        assert rc == 2
+        assert "storage error" in err
+
 
 class TestQuery:
     def _setup(self, tmp_db_path: Path, capsys):
