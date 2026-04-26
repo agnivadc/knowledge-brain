@@ -1,0 +1,8 @@
+fs.read:
+  - "$BRAIN_DB_PATH"
+fs.write:
+  - "$BRAIN_DB_PATH"
+tool.exec:
+  - brain
+  - brain-mcp
+net.access: []

@@ -44,7 +44,10 @@ class TestWrite:
             capsys,
         )
         assert rc == 0
-        assert out.strip().startswith("kn-")
+        payload = json.loads(out)
+        assert payload["id"].startswith("kn-")
+        assert payload["content"] == "hello world"
+        assert payload["tags"] == ["t1", "t2"]
 
     def test_write_rejects_empty_content(self, tmp_db_path: Path, capsys):
         self._init(tmp_db_path, capsys)
@@ -82,6 +85,16 @@ class TestWrite:
         )
         assert rc == 1
         assert "exceeds max_input_tokens" in err
+
+    def test_write_to_uninitialized_db_exits_2(self, tmp_path: Path, capsys):
+        db = tmp_path / "noinit.db"
+        # No init - table doesn't exist; triggers sqlite3.OperationalError
+        rc, _, err = _run(
+            ["--db-path", str(db), "write", "hello", "--tags", "t"],
+            capsys,
+        )
+        assert rc == 2
+        assert "storage error" in err
 
 
 class TestQuery:
@@ -172,15 +185,13 @@ class TestExportImport:
                 ],
                 capsys,
             )
-            ids.append(out.strip())
+            ids.append(json.loads(out.strip())["id"])
         return ids
 
     def test_export_writes_one_jsonl_line_per_node(self, tmp_db_path: Path, tmp_path: Path, capsys):
         self._seed(tmp_db_path, capsys, n=3)
         out_path = tmp_path / "k.jsonl"
-        rc, out, _ = _run(
-            ["--db-path", str(tmp_db_path), "export", str(out_path)], capsys
-        )
+        rc, out, _ = _run(["--db-path", str(tmp_db_path), "export", str(out_path)], capsys)
         assert rc == 0
         assert "exported 3 node(s)" in out
         lines = out_path.read_text(encoding="utf-8").splitlines()
@@ -192,15 +203,13 @@ class TestExportImport:
         self._seed(tmp_db_path, capsys, n=5)
         out_path = tmp_path / "k.jsonl"
         _run(["--db-path", str(tmp_db_path), "export", str(out_path)], capsys)
-        ids = [json.loads(l)["id"] for l in out_path.read_text("utf-8").splitlines()]
+        ids = [json.loads(line)["id"] for line in out_path.read_text("utf-8").splitlines()]
         assert ids == sorted(ids)
 
     def test_export_creates_parent_dirs(self, tmp_db_path: Path, tmp_path: Path, capsys):
         self._seed(tmp_db_path, capsys, n=1)
         nested = tmp_path / "a" / "b" / "c.jsonl"
-        rc, _, _ = _run(
-            ["--db-path", str(tmp_db_path), "export", str(nested)], capsys
-        )
+        rc, _, _ = _run(["--db-path", str(tmp_db_path), "export", str(nested)], capsys)
         assert rc == 0
         assert nested.exists()
 
@@ -212,9 +221,7 @@ class TestExportImport:
         ids = self._seed(src_db, capsys, n=4)
         _run(["--db-path", str(src_db), "export", str(jsonl)], capsys)
 
-        rc, out, _ = _run(
-            ["--db-path", str(dst_db), "import", str(jsonl)], capsys
-        )
+        rc, out, _ = _run(["--db-path", str(dst_db), "import", str(jsonl)], capsys)
         assert rc == 0
         assert "4 inserted" in out
 
@@ -224,7 +231,7 @@ class TestExportImport:
         assert jsonl.read_text("utf-8") == jsonl2.read_text("utf-8")
 
         # All seeded ids made it through
-        dst_ids = {json.loads(l)["id"] for l in jsonl2.read_text("utf-8").splitlines()}
+        dst_ids = {json.loads(line)["id"] for line in jsonl2.read_text("utf-8").splitlines()}
         assert dst_ids == set(ids)
 
     def test_import_skips_existing_ids_by_default(self, tmp_path: Path, capsys):
@@ -247,9 +254,7 @@ class TestExportImport:
         self._seed(src_db, capsys, n=2)
         _run(["--db-path", str(src_db), "export", str(jsonl)], capsys)
 
-        rc, out, _ = _run(
-            ["--db-path", str(src_db), "import", str(jsonl), "--force"], capsys
-        )
+        rc, out, _ = _run(["--db-path", str(src_db), "import", str(jsonl), "--force"], capsys)
         assert rc == 0
         assert "2 replaced" in out
 
@@ -263,9 +268,7 @@ class TestExportImport:
         jsonl.write_text("\n" + original + "\n\n", encoding="utf-8")
 
         dst_db = tmp_path / "dst.db"
-        rc, out, _ = _run(
-            ["--db-path", str(dst_db), "import", str(jsonl)], capsys
-        )
+        rc, out, _ = _run(["--db-path", str(dst_db), "import", str(jsonl)], capsys)
         assert rc == 0
         assert "2 inserted" in out
 
@@ -280,9 +283,7 @@ class TestExportImport:
     def test_import_errors_on_malformed_line(self, tmp_path: Path, capsys):
         jsonl = tmp_path / "bad.jsonl"
         jsonl.write_text("not valid json\n", encoding="utf-8")
-        rc, out, _ = _run(
-            ["--db-path", str(tmp_path / "k.db"), "import", str(jsonl)], capsys
-        )
+        rc, out, _ = _run(["--db-path", str(tmp_path / "k.db"), "import", str(jsonl)], capsys)
         assert rc == 1
         assert "line 1" in out
 

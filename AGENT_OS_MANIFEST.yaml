@@ -1,0 +1,15 @@
+constitution: AGENT_OS_CONSTITUTION
+conforms-to-version: v2
+layer: L3
+authority: none
+conflict-resolution: constitution governs
+l3-transport:
+  - bash-cli
+  - mcp
+operations:
+  - brain_write
+  - brain_query
+  - brain_export
+permissions-manifest: permissions.yaml
+component-version: 0.1.0
+integrity-sha256: pending

@@ -57,6 +57,12 @@ async def brain_query(
     )
 
 
+@mcp.tool()
+async def brain_export() -> list[KnowledgeNode]:
+    """Export all knowledge nodes. Used for backup and cross-session sync."""
+    return _store().all_nodes()
+
+
 def main() -> None:
     mcp.run(transport="stdio")
 

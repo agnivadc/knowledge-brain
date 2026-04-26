@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import sqlite3
 import sys
 
 from ..models import InputValidationError
@@ -32,6 +33,9 @@ def main(argv: list[str] | None = None) -> int:
     except InputValidationError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
+    except (sqlite3.OperationalError, sqlite3.DatabaseError) as e:
+        print(f"storage error: {e}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
