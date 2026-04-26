@@ -44,7 +44,10 @@ class TestWrite:
             capsys,
         )
         assert rc == 0
-        assert out.strip().startswith("kn-")
+        payload = json.loads(out)
+        assert payload["id"].startswith("kn-")
+        assert payload["content"] == "hello world"
+        assert payload["tags"] == ["t1", "t2"]
 
     def test_write_rejects_empty_content(self, tmp_db_path: Path, capsys):
         self._init(tmp_db_path, capsys)
@@ -172,7 +175,7 @@ class TestExportImport:
                 ],
                 capsys,
             )
-            ids.append(out.strip())
+            ids.append(json.loads(out.strip())["id"])
         return ids
 
     def test_export_writes_one_jsonl_line_per_node(self, tmp_db_path: Path, tmp_path: Path, capsys):

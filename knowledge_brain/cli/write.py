@@ -48,5 +48,5 @@ def run(args: argparse.Namespace) -> int:
         confidence=args.confidence,
     )
     Store(Path(args.db_path)).write_node(node)
-    print(node.id)
+    print(node.model_dump_json())
     return 0
