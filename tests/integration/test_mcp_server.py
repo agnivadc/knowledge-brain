@@ -21,6 +21,7 @@ async def test_server_registers_brain_tools():
     tool_names = {t.name for t in await srv.mcp.list_tools()}
     assert "brain_write" in tool_names
     assert "brain_query" in tool_names
+    assert "brain_export" in tool_names
 
 
 async def test_brain_write_persists_and_returns_result():
@@ -78,3 +79,17 @@ async def test_brain_write_round_trips_via_call_tool():
         assert written["node"]["content"] == "via call_tool"
     else:
         pytest.fail(f"unexpected call_tool return type: {type(written).__name__}")
+
+
+async def test_brain_export_returns_all_nodes():
+    await srv.brain_write(content="node one", tags=["a"])
+    await srv.brain_write(content="node two", tags=["b"])
+    nodes = await srv.brain_export()
+    assert len(nodes) == 2
+    contents = {n.content for n in nodes}
+    assert contents == {"node one", "node two"}
+
+
+async def test_brain_export_empty_db_returns_empty_list():
+    nodes = await srv.brain_export()
+    assert nodes == []

@@ -110,9 +110,7 @@ class Store:
     def all_nodes(self) -> list[KnowledgeNode]:
         """Return all nodes sorted by id (stable for diff-friendly export)."""
         with self._connect() as conn:
-            rows = conn.execute(
-                f"SELECT {_COLS} FROM knowledge_nodes ORDER BY id"
-            ).fetchall()
+            rows = conn.execute(f"SELECT {_COLS} FROM knowledge_nodes ORDER BY id").fetchall()
         return [_row_to_node(r) for r in rows]
 
     def query(
