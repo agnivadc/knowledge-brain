@@ -1,40 +1,35 @@
 # Knowledge Brain
 
-Knowledge Brain is a small persistent memory layer for AI agents.
-
-It stores notes in SQLite and exposes the same data in two ways:
-- a `brain` command-line tool for humans and scripts
-- an MCP server for Claude and other MCP clients
+Knowledge Brain is a small place to keep notes that should last.
 
 ## What knowledge-brain Is
 
-`knowledge-brain` is a simple place to keep durable facts, decisions, and other useful notes.
+`knowledge-brain` saves useful notes for later.
 
-It is not a full agent runtime.
-It does one job: save and find memory entries in a predictable way.
+You can think of it as a notebook for an AI tool or a project.
+It keeps facts, decisions, and reminders in a file on your machine so they do not disappear when a session ends.
 
 ## Why Memory Is Separate From The Runtime
 
-Keeping memory separate from the runtime makes the system easier to reason about.
+Memory is kept separate from the running tool so the notes survive even when the tool closes, restarts, or changes.
 
-The runtime can start, stop, or change without losing the stored knowledge.
-The memory database can also be shared across tools without tying it to one specific agent process.
+This also makes it easier to share the same notes across different tools without tying them to one specific session.
 
 ## Two Kinds Of Memory
 
-This project is designed to work with two broad memory scopes:
+There are two main ways to use memory here:
 
-- project-local memory: only for one project
-- global memory: shared across projects on the same machine
+- project-local memory: notes for one project only
+- global memory: notes that can be used across many projects
 
-The same CLI and MCP tools can work with either scope. The difference is which database path you point them at.
+The difference is where the notes are stored.
 
 ## The Safe Default
 
 The safe default is project-local memory.
 
-That means new notes stay with the project unless you explicitly choose a different database path.
-This reduces accidental sharing and keeps project history isolated.
+That means new notes stay with the project unless you choose to store them somewhere else.
+This helps keep project work separate and reduces accidental sharing.
 
 ## Tiny Example
 
@@ -46,46 +41,25 @@ brain query "project-local memory"
 
 ## How It Connects To context_os
 
-`context_os` uses Knowledge Brain as its persistent L3 memory backend.
+`context_os` can use Knowledge Brain as its long-term note store.
 
-In practice, `context_os` can point the `brain` CLI or MCP server at a project-local database for one repo, or at a global database when memory should follow you across projects.
+In simple terms, `context_os` can point to a project-specific note file when memory should stay with one repo, or to a shared note file when memory should follow you across projects.
 
 ## When To Use Global Memory
 
-Use global memory when the note is personal, stable, and useful in many projects.
+Use global memory for notes that are personal and useful almost everywhere.
 
 Good examples:
-- your preferred coding conventions
-- machine-specific setup notes
-- recurring facts you want available everywhere
+- your preferred coding style
+- machine setup notes
+- facts you want available in every project
 
 ## When Not To Use Global Memory
 
-Do not use global memory for project-specific or temporary information.
+Do not use global memory for things that belong to only one project.
 
 Avoid it for:
-- one-off implementation details
-- decisions that only matter in one repo
-- draft ideas that may change soon
-- anything you would not want visible in unrelated projects
-
-## Install
-
-```bash
-uv sync --extra dev
-# or:  pip install -e .[dev]
-```
-
-## MCP Server
-
-Run `brain-mcp` over stdio. Set `BRAIN_DB_PATH` to point at the database you want to use.
-
-The server exposes two tools:
-- `brain_write`
-- `brain_query`
-
-To wire it into Claude Code or Claude Desktop, see `docs/mcp-setup.md`.
-
-## Status
-
-This is the MVP. See `CLAUDE.md` for what is intentionally out of scope.
+- temporary ideas
+- implementation details for one repo
+- decisions that may change soon
+- anything you would not want mixed into unrelated work
