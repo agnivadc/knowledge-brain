@@ -39,6 +39,12 @@ brain write "This project uses project-local memory by default." --tags project,
 brain query "project-local memory"
 ```
 
+`brain init` creates the local note file for this project.
+`brain write` saves one note with two tags: `project` and `example`.
+`brain query` looks up notes that mention "project-local memory".
+
+Expected result: the note is saved, and the query returns that note from the project-local store.
+
 ## How It Connects To context_os
 
 `context_os` can use Knowledge Brain as its long-term note store.
