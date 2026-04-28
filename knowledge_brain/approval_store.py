@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS approvals (
     approved_at TEXT,
     denied_at TEXT,
     invalidated_at TEXT,
-    final_status TEXT NOT NULL CHECK(final_status IN ('APPROVED', 'DENIED', 'EXPIRED')),
+    final_status TEXT NOT NULL CHECK(final_status IN ('PENDING', 'APPROVED', 'DENIED', 'EXPIRED')),
     reason TEXT NOT NULL DEFAULT '',
     approver_meta_json TEXT NOT NULL DEFAULT '{}',
     PRIMARY KEY (session_id, action_hash)
