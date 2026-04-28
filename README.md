@@ -1,71 +1,210 @@
-# Knowledge Brain
+# knowledge-brain
 
-Knowledge Brain is a small place to keep notes that should last.
+Persistent memory for AI agents. Notes written in one session are available in the next — across projects, across tools, across restarts.
 
-## What knowledge-brain Is
+Works as a CLI tool and as an MCP server (for Claude Code, GitHub Copilot, and any MCP-compatible host).
 
-`knowledge-brain` saves useful notes for later.
+---
 
-You can think of it as a notebook for an AI tool or a project.
-It keeps facts, decisions, and reminders in a file on your machine so they do not disappear when a session ends.
+## What problem does this solve?
 
-## Why Memory Is Separate From The Runtime
+AI assistants forget everything when a session ends. If you told your AI assistant about your coding style last week, you have to tell it again today. If it discovered something useful about your project, that knowledge disappears.
 
-Memory is kept separate from the running tool so the notes survive even when the tool closes, restarts, or changes.
+`knowledge-brain` gives AI assistants a place to store notes that survive restarts. The AI writes a note; next session it reads it back. You see exactly what is stored and can manage it yourself.
 
-This also makes it easier to share the same notes across different tools without tying them to one specific session.
+---
 
-## Two Kinds Of Memory
+## How it works
 
-There are two main ways to use memory here:
+Notes are stored in a local SQLite file on your machine — nothing leaves your computer unless you put it there.
 
-- project-local memory: notes for one project only
-- global memory: notes that can be used across many projects
+Two storage scopes:
 
-The difference is where the notes are stored.
+| Scope | Where | When to use |
+|---|---|---|
+| **Global** (recommended for personal use) | `~/.knowledge-brain/knowledge.db` | Notes useful across all your projects (coding style, preferences, machine setup) |
+| **Project-local** | `data_store/knowledge.db` in your project | Notes that belong to one project only |
 
-## The Safe Default
+---
 
-The safe default is project-local memory.
+## Prerequisites
 
-That means new notes stay with the project unless you choose to store them somewhere else.
-This helps keep project work separate and reduces accidental sharing.
+- **Python 3.12+** — check with `python3 --version`
+- **uv** — fast Python package manager
 
-## Tiny Example
+Install `uv` if you don't have it:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+---
+
+## Installation
+
+### As a CLI tool (run directly, no install needed)
+
+```bash
+# Initialize global memory once
+uvx --from git+https://github.com/agnivadc/knowledge-brain.git \
+  brain --db-path ~/.knowledge-brain/knowledge.db init
+
+# Set the path in your shell profile so you don't have to type it every time
+echo 'export BRAIN_DB_PATH="$HOME/.knowledge-brain/knowledge.db"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+### As a developer (clone the repo)
+
+```bash
+git clone https://github.com/agnivadc/knowledge-brain.git
+cd knowledge-brain
+uv sync --extra dev
+uv run brain --db-path data_store/knowledge.db init
+```
+
+---
+
+## CLI Reference
+
+All commands accept `--db-path <path>` to choose which database to use. If you set `BRAIN_DB_PATH`, you can omit it.
+
+### `brain init`
+
+Creates the database file.
 
 ```bash
 brain init
-brain write "This project uses project-local memory by default." --tags project,example
-brain query "project-local memory"
+# or
+brain --db-path ~/.knowledge-brain/knowledge.db init
 ```
 
-`brain init` creates the local note file for this project.
-`brain write` saves one note with two tags: `project` and `example`.
-`brain query` looks up notes that mention "project-local memory".
+### `brain write`
 
-Expected result: the note is saved, and the query returns that note from the project-local store.
+Saves a note.
 
-## How It Connects To context_os
+```bash
+brain write "This project uses tabs, not spaces." --tags style,python
+brain write "Deploy target is AWS us-east-1." --tags infra,aws
+brain write "Auth uses JWT tokens, 1 hour expiry." --tags auth
+```
 
-`context_os` can use Knowledge Brain as its long-term note store.
+### `brain query`
 
-In simple terms, `context_os` can point to a project-specific note file when memory should stay with one repo, or to a shared note file when memory should follow you across projects.
+Searches for notes by keywords.
 
-## When To Use Global Memory
+```bash
+brain query "coding style"
+# Returns notes that mention coding style
 
-Use global memory for notes that are personal and useful almost everywhere.
+brain query "deploy"
+# Returns notes tagged with deploy or mentioning deploy
+```
 
-Good examples:
-- your preferred coding style
-- machine setup notes
-- facts you want available in every project
+### `brain list`
 
-## When Not To Use Global Memory
+Shows all stored notes.
 
-Do not use global memory for things that belong to only one project.
+```bash
+brain list
+```
 
-Avoid it for:
-- temporary ideas
-- implementation details for one repo
-- decisions that may change soon
-- anything you would not want mixed into unrelated work
+### `brain export`
+
+Exports all notes to a JSON Lines file.
+
+```bash
+brain export --output backup.jsonl
+```
+
+### `brain import`
+
+Imports notes from a JSON Lines file.
+
+```bash
+brain import backup.jsonl
+```
+
+---
+
+## MCP Server (for AI assistants)
+
+MCP lets AI tools like Claude Code use `knowledge-brain` directly — no manual copy-paste needed. The AI writes notes with `brain_write` and retrieves them with `brain_query` as part of its normal workflow.
+
+### Claude Code
+
+```bash
+claude mcp add knowledge-brain \
+  --scope user \
+  --env BRAIN_DB_PATH="$HOME/.knowledge-brain/knowledge.db" \
+  -- uvx --from git+https://github.com/agnivadc/knowledge-brain.git brain-mcp
+```
+
+Restart Claude Code. The tools `brain_write` and `brain_query` appear automatically in Claude's tool list.
+
+### GitHub Copilot
+
+In Copilot settings, enable MCP and add the same `brain-mcp` server command:
+```
+uvx --from git+https://github.com/agnivadc/knowledge-brain.git brain-mcp
+```
+Set environment variable `BRAIN_DB_PATH` to your global database path.
+
+### OpenAI Codex / Pi
+
+These use the `brain` CLI directly as a bash tool. Set `BRAIN_DB_PATH` in your shell profile:
+```bash
+export BRAIN_DB_PATH="$HOME/.knowledge-brain/knowledge.db"
+```
+No extra config needed — the AI calls `brain write` and `brain query` in its bash tool.
+
+---
+
+## What gets stored and what doesn't
+
+**Good things to store:**
+- Your preferred coding style, naming conventions, patterns
+- Project decisions and the reasoning behind them
+- Machine setup notes, tool versions, paths
+- Facts you want available in every session
+
+**Things to avoid storing:**
+- Temporary or in-progress work (use a scratch file instead)
+- Secrets, passwords, or tokens
+- Implementation details that change often
+- Anything you wouldn't want mixed into unrelated projects
+
+---
+
+## Example session
+
+```bash
+# Claude Code session 1
+# Claude writes a note after learning something:
+brain write "Project uses Pydantic v2. All models must inherit from BaseModel." --tags project,pydantic
+
+# Claude Code session 2 (next day, new session)
+# Claude queries memory before starting:
+brain query "pydantic"
+# Retrieves: "Project uses Pydantic v2..."
+# Claude now knows this without being told again.
+```
+
+---
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `brain: command not found` | Not installed or not in PATH | Use `uvx --from git+... brain` or add uv bin dir to PATH |
+| `brain_write` / `brain_query` missing in Claude Code | MCP server not registered | Run the `claude mcp add` command above, then restart Claude Code |
+| Query returns nothing for a note you just wrote | CLI and MCP pointing at different DB files | Make sure `BRAIN_DB_PATH` is the same absolute path in your shell and in the MCP config |
+| `database is locked` error | Two processes writing at the same time | Retry — the write will go through once the lock releases |
+| First `uvx` run is slow | Downloading and caching the package | Subsequent runs are fast (cache at `~/.cache/uv/`) |
+
+---
+
+## How it connects to Agent OS
+
+[context_os](https://github.com/algoSiliguri/context_os) uses `knowledge-brain` as its memory substrate. When an AI session is active under Agent OS, memory reads and writes are routed through `knowledge-brain` automatically — either to a global store or to a project-local store, depending on your manifest settings.
+
+You don't need Agent OS to use `knowledge-brain` — it works standalone. But if you want full session governance (binding, approval flows, event logging), use both together.
