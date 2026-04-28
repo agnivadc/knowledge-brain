@@ -100,3 +100,44 @@ class ApprovalStore:
             reason=row[10],
             approver_meta_json=row[11],
         )
+
+    def list_recent(
+        self,
+        *,
+        namespace: str | None = None,
+        session_id: str | None = None,
+        limit: int = 5,
+    ) -> list[ApprovalProjection]:
+        where: list[str] = []
+        params: list[str | int] = []
+        if namespace is not None:
+            where.append("namespace = ?")
+            params.append(namespace)
+        if session_id is not None:
+            where.append("session_id = ?")
+            params.append(session_id)
+        clause = f" WHERE {' AND '.join(where)}" if where else ""
+        query = (
+            "SELECT session_id, action_hash, namespace, capability, requested_at, expires_at, "
+            "approved_at, denied_at, invalidated_at, final_status, reason, approver_meta_json "
+            f"FROM approvals{clause} ORDER BY requested_at DESC LIMIT ?"
+        )
+        with sqlite3.connect(self.db_path) as conn:
+            rows = conn.execute(query, [*params, limit]).fetchall()
+        return [
+            ApprovalProjection(
+                session_id=row[0],
+                action_hash=row[1],
+                namespace=row[2],
+                capability=row[3],
+                requested_at=row[4],
+                expires_at=row[5],
+                approved_at=row[6],
+                denied_at=row[7],
+                invalidated_at=row[8],
+                final_status=row[9],
+                reason=row[10],
+                approver_meta_json=row[11],
+            )
+            for row in rows
+        ]
