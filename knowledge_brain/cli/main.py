@@ -12,6 +12,8 @@ from . import list as list_cmd
 from . import query as query_cmd
 from . import write as write_cmd
 
+PROTOCOL_VERSION = "1.0.0"
+
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="brain", description="Knowledge Brain MVP")
@@ -27,7 +29,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    args_list = list(argv) if argv is not None else sys.argv[1:]
+    if "--protocol-version" in args_list:
+        print(PROTOCOL_VERSION)
+        return 0
+    args = build_parser().parse_args(args_list)
     try:
         return args.func(args)
     except InputValidationError as e:
