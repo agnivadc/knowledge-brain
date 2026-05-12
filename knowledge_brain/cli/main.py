@@ -4,6 +4,7 @@ import argparse
 import sqlite3
 import sys
 
+from .. import __version__
 from ..models import InputValidationError
 from . import export as export_cmd
 from . import import_jsonl as import_cmd
@@ -17,6 +18,7 @@ PROTOCOL_VERSION = "1.0.0"
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="brain", description="Knowledge Brain MVP")
+    p.add_argument("--version", action="version", version=f"knowledge-brain {__version__}")
     p.add_argument(
         "--db-path",
         default="data_store/knowledge.db",
