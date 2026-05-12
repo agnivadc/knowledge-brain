@@ -288,6 +288,21 @@ class TestExportImport:
         assert "line 1" in out
 
 
+class TestVersion:
+    def test_version_flag_prints_version(self, capsys):
+        with pytest.raises(SystemExit) as exc_info:
+            main(["--version"])
+        assert exc_info.value.code == 0
+        out = capsys.readouterr().out
+        assert "knowledge-brain" in out
+        assert "1.0.0" in out
+
+    def test_protocol_version_flag(self, capsys):
+        rc, out, _ = _run(["--protocol-version"], capsys)
+        assert rc == 0
+        assert out.strip() == "1.0.0"
+
+
 class TestParser:
     def test_unknown_subcommand_errors(self, capsys):
         with pytest.raises(SystemExit):
