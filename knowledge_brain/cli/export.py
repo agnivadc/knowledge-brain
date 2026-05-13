@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
+from ..jsonl import encode_nodes
+from ..operations import BrainOperations
 from ..store import Store
 
 
@@ -17,12 +18,12 @@ def register(sub: argparse._SubParsersAction) -> None:
 
 
 def run(args: argparse.Namespace) -> int:
-    nodes = Store(Path(args.db_path)).all_nodes()
+    nodes = BrainOperations(Store(Path(args.db_path))).export()
     out = Path(args.path)
     out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w", encoding="utf-8", newline="\n") as f:
-        for n in nodes:
-            f.write(json.dumps(n.model_dump(mode="json"), sort_keys=True))
+        for line in encode_nodes(nodes):
+            f.write(line)
             f.write("\n")
     print(f"exported {len(nodes)} node(s) to {out}")
     return 0

@@ -3,8 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from ..models import CompiledContextResponse
-from ..quality import validate_query_input
+from ..operations import BrainOperations
 from ..store import Store
 
 
@@ -28,16 +27,12 @@ def _parse_tags(raw: str) -> list[str] | None:
 
 
 def run(args: argparse.Namespace) -> int:
-    validate_query_input(args.query, args.max_input_tokens)
     tags = _parse_tags(args.tags)
-    items, total = Store(Path(args.db_path)).query(
-        query_text=args.query, tags=tags, limit=args.limit
-    )
-    response = CompiledContextResponse(
+    response = BrainOperations(Store(Path(args.db_path))).query(
         query=args.query,
-        items=items,
-        total_matches=total,
-        returned_count=len(items),
+        tags=tags,
+        max_input_tokens=args.max_input_tokens,
+        max_results=args.limit,
     )
     print(response.model_dump_json(indent=2))
     return 0

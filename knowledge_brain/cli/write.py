@@ -3,8 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from ..models import KnowledgeNode
-from ..quality import validate_write_input
+from ..operations import BrainOperations
 from ..store import Store
 
 
@@ -39,14 +38,13 @@ def _parse_tags(raw: str) -> list[str]:
 
 def run(args: argparse.Namespace) -> int:
     tags = _parse_tags(args.tags)
-    validate_write_input(args.content, tags, args.max_input_tokens)
-    node = KnowledgeNode(
+    result = BrainOperations(Store(Path(args.db_path))).write(
         content=args.content,
         tags=tags,
         source_type=args.source_type,
         source_ref=args.source_ref,
         confidence=args.confidence,
+        max_input_tokens=args.max_input_tokens,
     )
-    Store(Path(args.db_path)).write_node(node)
-    print(node.model_dump_json())
+    print(result.node.model_dump_json())
     return 0

@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
-from ..models import KnowledgeNode
+from ..jsonl import JsonlNodeDecodeError, format_import_summary, import_nodes_from_lines
 from ..store import Store
 
 
@@ -31,22 +30,12 @@ def run(args: argparse.Namespace) -> int:
     store = Store(Path(args.db_path))
     store.init_schema()
 
-    counts = {"inserted": 0, "skipped": 0, "replaced": 0}
-    with src.open(encoding="utf-8") as f:
-        for line_no, raw in enumerate(f, start=1):
-            line = raw.strip()
-            if not line:
-                continue
-            try:
-                data = json.loads(line)
-                node = KnowledgeNode(**data)
-            except Exception as e:
-                print(f"error: line {line_no}: {e}", flush=True)
-                return 1
-            counts[store.merge_node(node, force=args.force)] += 1
+    try:
+        with src.open(encoding="utf-8") as f:
+            summary = import_nodes_from_lines(f, store, force=args.force)
+    except JsonlNodeDecodeError as e:
+        print(f"error: {e}", flush=True)
+        return 1
 
-    print(
-        f"import complete: {counts['inserted']} inserted, "
-        f"{counts['skipped']} skipped, {counts['replaced']} replaced"
-    )
+    print(format_import_summary(summary))
     return 0
