@@ -5,7 +5,6 @@ from pathlib import Path
 
 from ..jsonl import encode_nodes
 from ..operations import BrainOperations
-from ..store import Store
 
 
 def register(sub: argparse._SubParsersAction) -> None:
@@ -18,7 +17,7 @@ def register(sub: argparse._SubParsersAction) -> None:
 
 
 def run(args: argparse.Namespace) -> int:
-    nodes = BrainOperations(Store(Path(args.db_path))).export()
+    nodes = BrainOperations.from_db(args.db_path).export()
     out = Path(args.path)
     out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w", encoding="utf-8", newline="\n") as f:

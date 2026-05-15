@@ -1,10 +1,7 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
-
 from ..operations import BrainOperations
-from ..store import Store
 
 
 def register(sub: argparse._SubParsersAction) -> None:
@@ -38,7 +35,7 @@ def _parse_tags(raw: str) -> list[str]:
 
 def run(args: argparse.Namespace) -> int:
     tags = _parse_tags(args.tags)
-    result = BrainOperations(Store(Path(args.db_path))).write(
+    result = BrainOperations.from_db(args.db_path).write(
         content=args.content,
         tags=tags,
         source_type=args.source_type,

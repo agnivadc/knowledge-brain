@@ -1,24 +1,18 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from typing import Literal
 
 from mcp.server.fastmcp import FastMCP
 
 from ..models import CompiledContextResponse, KnowledgeNode, WriteResult
 from ..operations import BrainOperations
-from ..store import Store
 
 mcp = FastMCP("knowledge-brain")
 
 
-def _store() -> Store:
-    return Store(Path(os.environ.get("BRAIN_DB_PATH", "data_store/knowledge.db")))
-
-
-def _operations() -> BrainOperations:
-    return BrainOperations(_store())
+def _ops() -> BrainOperations:
+    return BrainOperations.from_db(os.environ.get("BRAIN_DB_PATH", "data_store/knowledge.db"))
 
 
 @mcp.tool()
@@ -31,7 +25,7 @@ async def brain_write(
     max_input_tokens: int = 2000,
 ) -> WriteResult:
     """Write a knowledge node to the brain. Returns the persisted node."""
-    return _operations().write(
+    return _ops().write(
         content=content,
         tags=tags,
         source_type=source_type,
@@ -49,7 +43,7 @@ async def brain_query(
     max_results: int = 10,
 ) -> CompiledContextResponse:
     """Query the brain by tag and/or text match. Returns top-N most-recent items."""
-    return _operations().query(
+    return _ops().query(
         query=query,
         tags=tags,
         max_input_tokens=max_input_tokens,
@@ -60,7 +54,7 @@ async def brain_query(
 @mcp.tool()
 async def brain_export() -> list[KnowledgeNode]:
     """Export all knowledge nodes. Used for backup and cross-session sync."""
-    return _operations().export()
+    return _ops().export()
 
 
 def main() -> None:

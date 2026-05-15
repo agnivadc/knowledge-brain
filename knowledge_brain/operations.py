@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Protocol
 
 from .models import CompiledContextResponse, KnowledgeNode, SourceType, WriteResult
@@ -22,6 +23,11 @@ class BrainStore(Protocol):
 class BrainOperations:
     def __init__(self, store: BrainStore):
         self.store = store
+
+    @classmethod
+    def from_db(cls, db_path: str | Path) -> "BrainOperations":
+        from .store import Store
+        return cls(Store(Path(db_path)))
 
     def write(
         self,

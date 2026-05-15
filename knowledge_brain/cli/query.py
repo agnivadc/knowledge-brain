@@ -1,10 +1,7 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
-
 from ..operations import BrainOperations
-from ..store import Store
 
 
 def register(sub: argparse._SubParsersAction) -> None:
@@ -28,7 +25,7 @@ def _parse_tags(raw: str) -> list[str] | None:
 
 def run(args: argparse.Namespace) -> int:
     tags = _parse_tags(args.tags)
-    response = BrainOperations(Store(Path(args.db_path))).query(
+    response = BrainOperations.from_db(args.db_path).query(
         query=args.query,
         tags=tags,
         max_input_tokens=args.max_input_tokens,
