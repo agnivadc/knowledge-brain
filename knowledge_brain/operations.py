@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
 from .models import CompiledContextResponse, KnowledgeNode, SourceType, WriteResult
 from .quality import validate_query_input, validate_write_input
 
 
+@runtime_checkable
 class BrainStore(Protocol):
     def write_node(self, node: KnowledgeNode) -> None: ...
 
@@ -22,6 +23,8 @@ class BrainStore(Protocol):
 
 class BrainOperations:
     def __init__(self, store: BrainStore):
+        if not isinstance(store, BrainStore):
+            raise TypeError(f"store must implement BrainStore protocol, got {type(store).__name__}")
         self.store = store
 
     @classmethod
