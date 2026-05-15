@@ -295,7 +295,7 @@ class TestVersion:
         assert exc_info.value.code == 0
         out = capsys.readouterr().out
         assert "knowledge-brain" in out
-        assert "1.0.0" in out
+        assert "1.0.1" in out
 
     def test_protocol_version_flag(self, capsys):
         rc, out, _ = _run(["--protocol-version"], capsys)
