@@ -1,0 +1,187 @@
+{
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\.claude\\settings.json": {
+    "mtime": 1778913348.2229803,
+    "ast_hash": "e99d00f34528b94fcaaa41a2ab1c1654",
+    "semantic_hash": "e99d00f34528b94fcaaa41a2ab1c1654"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\.claude\\settings.local.json": {
+    "mtime": 1778928661.3680403,
+    "ast_hash": "14c6e8fcb3a35c8d1f867277db5b441b",
+    "semantic_hash": "14c6e8fcb3a35c8d1f867277db5b441b"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\jsonl.py": {
+    "mtime": 1778743454.1488264,
+    "ast_hash": "cc3a1cb346b13d9a0aa4794cfe31017b",
+    "semantic_hash": "cc3a1cb346b13d9a0aa4794cfe31017b"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\models.py": {
+    "mtime": 1778743454.157154,
+    "ast_hash": "5c8b1c6ac8cf3ebb950d745e073e87c8",
+    "semantic_hash": "5c8b1c6ac8cf3ebb950d745e073e87c8"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\operations.py": {
+    "mtime": 1778913348.159274,
+    "ast_hash": "3757ab48dfd7ca491060430903d06275",
+    "semantic_hash": "3757ab48dfd7ca491060430903d06275"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\quality.py": {
+    "mtime": 1778743454.1609812,
+    "ast_hash": "7003c0aa512c7d876a75dcbb7d07eb46",
+    "semantic_hash": "7003c0aa512c7d876a75dcbb7d07eb46"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\store.py": {
+    "mtime": 1778743454.1638184,
+    "ast_hash": "9e915f2531eb9b287d80ee039a3e90c7",
+    "semantic_hash": "9e915f2531eb9b287d80ee039a3e90c7"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\token_utils.py": {
+    "mtime": 1778743454.166178,
+    "ast_hash": "e3ec6e5bc62c8a1374af1395bd90c645",
+    "semantic_hash": "e3ec6e5bc62c8a1374af1395bd90c645"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\__init__.py": {
+    "mtime": 1778913348.1481948,
+    "ast_hash": "ab7ddd18e7254a33dd41ad8432acc436",
+    "semantic_hash": "ab7ddd18e7254a33dd41ad8432acc436"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\export.py": {
+    "mtime": 1778913348.1499357,
+    "ast_hash": "ba4f95ce7210caaa11b383bf05b954c0",
+    "semantic_hash": "ba4f95ce7210caaa11b383bf05b954c0"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\import_jsonl.py": {
+    "mtime": 1778743454.1368,
+    "ast_hash": "2008ff162bdc6b22c5e0bad5e528d775",
+    "semantic_hash": "2008ff162bdc6b22c5e0bad5e528d775"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\init.py": {
+    "mtime": 1778743454.1394937,
+    "ast_hash": "f613aa1a443c0934aa4da62099898d75",
+    "semantic_hash": "f613aa1a443c0934aa4da62099898d75"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\list.py": {
+    "mtime": 1778743454.1406708,
+    "ast_hash": "b7aa5f769d969ec7341470be77a534a8",
+    "semantic_hash": "b7aa5f769d969ec7341470be77a534a8"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\main.py": {
+    "mtime": 1778743454.1406708,
+    "ast_hash": "2023020580f756a4d8857810c386c90a",
+    "semantic_hash": "2023020580f756a4d8857810c386c90a"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\query.py": {
+    "mtime": 1778913348.1516738,
+    "ast_hash": "9e3fe205b1190093c7bb7e6d9c94ed41",
+    "semantic_hash": "9e3fe205b1190093c7bb7e6d9c94ed41"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\write.py": {
+    "mtime": 1778913348.1534166,
+    "ast_hash": "dec4724cae2f94fa5dc5e5ab2f1cfacf",
+    "semantic_hash": "dec4724cae2f94fa5dc5e5ab2f1cfacf"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\cli\\__init__.py": {
+    "mtime": 1778743454.131345,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\mcp\\server.py": {
+    "mtime": 1778913348.1558194,
+    "ast_hash": "dbf05d2107bfc3044289b43b00eb0a13",
+    "semantic_hash": "dbf05d2107bfc3044289b43b00eb0a13"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\knowledge_brain\\mcp\\__init__.py": {
+    "mtime": 1778743454.151522,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\conftest.py": {
+    "mtime": 1778743454.1834252,
+    "ast_hash": "daff210c46d48b7f27cdf14e360bf47b",
+    "semantic_hash": "daff210c46d48b7f27cdf14e360bf47b"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\__init__.py": {
+    "mtime": 1778743454.180979,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\integration\\test_cli.py": {
+    "mtime": 1778913348.159274,
+    "ast_hash": "fdeaf43fa6aeb763c9170c980562cb5b",
+    "semantic_hash": "fdeaf43fa6aeb763c9170c980562cb5b"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\integration\\test_mcp_server.py": {
+    "mtime": 1778743454.1916943,
+    "ast_hash": "b7bb08c6d0eaeb41ed35ebb669fade0f",
+    "semantic_hash": "b7bb08c6d0eaeb41ed35ebb669fade0f"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\integration\\__init__.py": {
+    "mtime": 1778743454.184438,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\unit\\test_jsonl.py": {
+    "mtime": 1778743454.1972086,
+    "ast_hash": "285fc940af73cc3dc10df793de70abb3",
+    "semantic_hash": "285fc940af73cc3dc10df793de70abb3"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\unit\\test_models.py": {
+    "mtime": 1778743454.200315,
+    "ast_hash": "df52a6477a8573ab41d391ed2441f33b",
+    "semantic_hash": "df52a6477a8573ab41d391ed2441f33b"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\unit\\test_operations.py": {
+    "mtime": 1778743454.202308,
+    "ast_hash": "20bac48c74eda459650134b0f476c1c2",
+    "semantic_hash": "20bac48c74eda459650134b0f476c1c2"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\unit\\test_quality.py": {
+    "mtime": 1778743454.2043068,
+    "ast_hash": "adf4d8839d3f08cb5cda79b2ee8d7cda",
+    "semantic_hash": "adf4d8839d3f08cb5cda79b2ee8d7cda"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\unit\\test_store.py": {
+    "mtime": 1778743454.2066293,
+    "ast_hash": "9dbd5b7b54d087abbd0653933d142623",
+    "semantic_hash": "9dbd5b7b54d087abbd0653933d142623"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\unit\\test_token_utils.py": {
+    "mtime": 1778743454.2095013,
+    "ast_hash": "661f4f6e104dd0f3f420eb903658fc8c",
+    "semantic_hash": "661f4f6e104dd0f3f420eb903658fc8c"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\tests\\unit\\__init__.py": {
+    "mtime": 1778743454.1942072,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\AGENT_OS_MANIFEST.yaml": {
+    "mtime": 1778743454.106059,
+    "ast_hash": "3f581c948cdf1fa7f05c8db5de6b2150",
+    "semantic_hash": "3f581c948cdf1fa7f05c8db5de6b2150"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\CLAUDE.md": {
+    "mtime": 1778913348.2318103,
+    "ast_hash": "210a1fa76992b7311af3a88a4bf7c5c2",
+    "semantic_hash": "210a1fa76992b7311af3a88a4bf7c5c2"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\permissions.yaml": {
+    "mtime": 1778743454.1685555,
+    "ast_hash": "3f987a2121459219573f9ac85ad5bc00",
+    "semantic_hash": "3f987a2121459219573f9ac85ad5bc00"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\README.md": {
+    "mtime": 1778743454.114206,
+    "ast_hash": "8b28229dc692a225a04841b6bd999178",
+    "semantic_hash": "8b28229dc692a225a04841b6bd999178"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\docs\\mcp-setup.md": {
+    "mtime": 1778743454.114206,
+    "ast_hash": "9256603c938fa2a31dfe84e7f294c938",
+    "semantic_hash": "9256603c938fa2a31dfe84e7f294c938"
+  },
+  "C:\\Users\\agnivad\\OneDrive - Microsoft\\Agniva\\starter\\knowledge-brain\\docs\\plans\\2026-04-25-mvp.md": {
+    "mtime": 1778743454.1228082,
+    "ast_hash": "452fbb4f116e6b2b8c1c8d9a8a671aa6",
+    "semantic_hash": "452fbb4f116e6b2b8c1c8d9a8a671aa6"
+  }
+}
